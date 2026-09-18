@@ -8,3 +8,19 @@ CREATE TABLE mcp_servers (
     updated_at TIMESTAMPTZ DEFAULT NOW(),
     UNIQUE(name, version)
 );
+
+CREATE table tools (
+    id BIGSERIAL PRIMARY KEY,
+    server_id BIGINT NOT NULL
+        REFERENCES mcp_servers(id)
+        ON DELETE CASCADE,
+    
+    name TEXT NOT NULL,
+    description TEXT,
+    input_schema JSONB,
+    output_schema JSONB,
+    capability TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPZ DEFAULT NOW(),
+    UNIQUE(server_id, name)
+)
