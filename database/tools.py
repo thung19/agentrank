@@ -8,7 +8,8 @@ def upsert_tool(
     description=None,
     input_schema=None,
     output_schema=None,
-    capability=None
+    capability=None,
+    raw_metadata=None
 ):
     cur.execute(
         """
@@ -18,9 +19,10 @@ def upsert_tool(
             description,
             input_schema,
             output_schema,
-            capability
+            capability,
+            raw_metadata
         )
-        VALUES (%s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
 
         ON CONFLICT (server_id, name)
         DO UPDATE SET
@@ -28,6 +30,7 @@ def upsert_tool(
             input_schema = EXCLUDED.input_schema,
             output_schema = EXCLUDED.output_schema,
             capability = EXCLUDED.capability,
+            raw_metadata = EXCLUDED.raw_metadata,
             updated_at = NOW()
 
         RETURNING id
@@ -38,7 +41,8 @@ def upsert_tool(
             description,
             Jsonb(input_schema) if input_schema is not None else None,
             Jsonb(output_schema) if output_schema is not None else None,
-            capability
+            capability,
+            Jsonb(raw_metadata) if raw_metadata is not None else None
         )
     )
 

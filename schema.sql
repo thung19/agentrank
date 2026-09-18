@@ -20,7 +20,8 @@ CREATE table tools (
     input_schema JSONB,
     output_schema JSONB,
     capability TEXT,
+    raw_metadata JSONB,
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    updated_at TIMESTAMPZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
     UNIQUE(server_id, name)
-)
+);

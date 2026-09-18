@@ -1,3 +1,4 @@
+from database.db import get_connection
 from database.servers import upsert_server
 
 server = {
@@ -8,10 +9,13 @@ server = {
     }
 }
 
-upsert_server(
-    server["name"],
-    server["version"],
-    server["raw_metadata"]
-)
+with get_connection() as conn:
+    with conn.cursor() as cur:
+        server_id = upsert_server(
+            cur,
+            server["name"],
+            server["version"],
+            server["raw_metadata"]
+        )
 
-print("upserted server")
+print("upserted server", server_id)
